@@ -64,7 +64,7 @@ function App() {
     if (filterType === "gabor") {
       endpoint += "gabor";
     } else if (filterType === "laplaciano") {
-      endpoint += "sobel";
+      endpoint += "laplaciano";
     } else if (filterType === "gaussian") {
       endpoint += "gaussiano"; 
     }
@@ -110,7 +110,7 @@ function App() {
           onChange={(e) => setFilterType(e.target.value)}
         >
           <option value="gabor">Gabor</option>
-          <option value="sobel">Sobel</option>
+          <option value="laplaciano">Laplaciano</option>
           <option value="gaussian">Gaussian</option>
         </select>
       </div>
