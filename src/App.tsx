@@ -9,6 +9,10 @@ import axios from 'axios'
 function App() {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
+  const backupImage = "pregunta.jpg";
+  const loadingImage = "pregunta.jpg";
+  const [isProcessing, setIsProcessing] = useState<boolean>(false);
+
   const [image, setImage] = useState<File | null>(null);
   const [filteredImage, setFilteredImage] = useState<string | null>(null);
   const [filterType, setFilterType] = useState<string>("gabor");
@@ -44,6 +48,8 @@ function App() {
 
   const applyFilter = async () => {
     if (!image) return;
+
+    setIsProcessing(true); // comenzar procesamiento
 
     const formData = new FormData();
     formData.append("image", image);
@@ -82,6 +88,8 @@ function App() {
 
     } catch (error) {
       console.error("Error al aplicar filtro:", error);
+    } finally {
+      setIsProcessing(false); // finalizar procesamiento
     }
 
   };
@@ -89,107 +97,130 @@ function App() {
 
 
   return (
-    <div className="p-4 max-w-md mx-auto">
-      <h1 className="text-xl font-bold mb-4">Image Filter App</h1>
-      {imagePreview && (
-        <div>
-          <img src={imagePreview} alt='Imagen' className="imagen"></img>
-        </div>
-      )}
+    <div>
+    <h1 className="title">Image Filter App</h1>
 
-      <div>
-        <label htmlFor="imageInput">Selecciona una imagen:</label>
-        <input id="imageInput" type="file" accept="image/*" onChange={handleImageChange} className="mt-1 w-full" />
-      </div>
-
-      <div>
-        <label htmlFor="filterSelect">Filtro a aplicar:</label>
-        <select
-          id="filterSelect"
-          value={filterType}
-          onChange={(e) => setFilterType(e.target.value)}
-        >
-          <option value="gabor">Gabor</option>
-          <option value="laplaciano">Laplaciano</option>
-          <option value="gaussian">Gaussian</option>
-        </select>
-      </div>
-
-
-      <div>
-        <label htmlFor="kernelSize">Tamaño de la máscara (kernel):</label>
-        <input
-          id="kernelSize"
-          type="number"
-          value={kernelSize}
-          onChange={(e) => {
-            const value = parseInt(e.target.value);
-            setKernelSize(isNaN(value) ? 0 : value);
-          }}
+    <div className="contenedor-principal">
+      {/* Columna izquierda - Imagen original */}
+      <div className="columna-izquierda">
+        <h2>Original</h2>
+        <img
+          src={imagePreview || backupImage}
+          alt='Imagen original'
+          className="imagen"
         />
       </div>
 
-      {filterType === "gaussian" && (
-        <div className="mb-4">
-          <label htmlFor="sigmaInput">Sigma (solo para Gaussian):</label>
+      {/* Columna central - Inputs */}
+      <div className="columna-centro">
+        <div>
+          <label htmlFor="imageInput">Selecciona una imagen:</label>
+          <input id="imageInput" type="file" accept="image/*" onChange={handleImageChange} />
+        </div>
+
+        <div>
+          <label htmlFor="filterSelect">Filtro a aplicar:</label>
+          <select
+            id="filterSelect"
+            value={filterType}
+            onChange={(e) => setFilterType(e.target.value)}
+          >
+            <option value="gabor">Gabor</option>
+            <option value="laplaciano">Laplaciano</option>
+            <option value="gaussian">Gaussian</option>
+          </select>
+        </div>
+
+        <div>
+          <label htmlFor="kernelSize">Tamaño de la máscara (kernel):</label>
           <input
-            id="sigmaInput"
+            id="kernelSize"
             type="number"
-            value={sigma}
-            onChange={(e) => {
-              const value = parseFloat(e.target.value);
-              setSigma(isNaN(value) ? 0 : value);
-            }}
-            placeholder="Sigma"
-            min={0.1}
-            step={0.1}
+            value={kernelSize}
+            onChange={(e) => setKernelSize(parseInt(e.target.value))}
           />
         </div>
-      )}
 
-      <div>
-        <label htmlFor="blockX">Block X (hilos en X):</label>
-        <input
-          id="blockX"
-          type="number"
-          value={blockX}
-          onChange={(e) => setBlockX(parseInt(e.target.value))}
-          min={1}
-          max={32}
-        />
+        {filterType === "gaussian" && (
+          <div>
+            <label htmlFor="sigmaInput">Sigma (solo para Gaussian):</label>
+            <input
+              id="sigmaInput"
+              type="number"
+              value={sigma}
+              onChange={(e) => setSigma(parseFloat(e.target.value))}
+              min={0.1}
+              step={0.1}
+            />
+          </div>
+        )}
+
+        <div>
+          <label htmlFor="blockX">Block X (hilos en X):</label>
+          <input
+            id="blockX"
+            type="number"
+            value={blockX}
+            onChange={(e) => setBlockX(parseInt(e.target.value))}
+            min={1}
+            max={32}
+          />
+        </div>
+
+        <div>
+          <label htmlFor="blockY">Block Y (hilos en Y):</label>
+          <input
+            id="blockY"
+            type="number"
+            value={blockY}
+            onChange={(e) => setBlockY(parseInt(e.target.value))}
+            min={1}
+            max={32}
+          />
+        </div>
+
+        <button onClick={applyFilter}>Aplicar Filtro</button>
       </div>
 
-      <div>
-        <label htmlFor="blockY">Block Y (hilos en Y):</label>
-        <input
-          id="blockY"
-          type="number"
-          value={blockY}
-          onChange={(e) => setBlockY(parseInt(e.target.value))}
-          min={1}
-          max={32}
+      {/* Columna derecha - Resultados */}
+      <div className="columna-derecha">
+        <h2>Resultado</h2>
+        <img
+          src={
+            isProcessing
+              ? loadingImage
+              : filteredImage
+              ? filteredImage
+              : backupImage
+          }
+          alt="Resultado"
+          className="imagen"
         />
+
       </div>
+    </div>
 
-
-      <button onClick={applyFilter}> Aplicar Filtro </button>
-
-      {filteredImage && (
-        <div className="mt-6">
-          <h2>Resultado del procesamiento</h2>
-          <img src={filteredImage} alt="Filtered" className="imagen" />
-          <div className="resultado-info">
-            {executionTime !== null && <p> Tiempo de ejecución: <strong>{executionTime} ms</strong></p>}
-            {returnedMask !== null && <p> Tamaño de máscara: <strong>{returnedMask} x {returnedMask} </strong></p>}
+    {!isProcessing && filteredImage && (
+          <div className="resultados-globales">
+            {executionTime !== null && (
+              <p>Tiempo de ejecución: <strong>{executionTime} ms</strong></p>
+            )}
+            {returnedMask !== null && (
+              <p>Tamaño de máscara: <strong>{returnedMask} x {returnedMask}</strong></p>
+            )}
             {filterType === "gaussian" && returnedSigma !== null && (
               <p>Sigma aplicado: <strong>{returnedSigma}</strong></p>
             )}
-            {returnedBlockX !== null && <p>Block X: <strong>{returnedBlockX}</strong></p>}
-            {returnedBlockY !== null && <p>Block Y: <strong>{returnedBlockY}</strong></p>}
+            {returnedBlockX !== null && (
+              <p>Block X: <strong>{returnedBlockX}</strong></p>
+            )}
+            {returnedBlockY !== null && (
+              <p>Block Y: <strong>{returnedBlockY}</strong></p>
+            )}
           </div>
-        </div>
-      )}
-    </div>
+        )}
+
+  </div>
   );
 }
 

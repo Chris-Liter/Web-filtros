@@ -1,8 +1,11 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+  width: 100vw; /* ocupar todo el ancho de la pantalla */
+  height: 100vh;
+  margin: 0;
+  padding: 0;
   text-align: center;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 .logo {
@@ -43,7 +46,15 @@
 
 .imagen{
   height: 400px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease;
 }
+
+.imagen:hover {
+  transform: scale(1.03);
+}
+
 
 label {
   display: block;
@@ -55,11 +66,12 @@ label {
 input[type="file"],
 input[type="number"],
 select {
+  background-color: light dark;
   width: 100%;
   padding: 8px;
   margin-bottom: 16px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 12px;
   box-sizing: border-box;
   font-size: 14px;
 }
@@ -70,21 +82,63 @@ button {
   color: white;
   padding: 10px 0;
   border: none;
-  border-radius: 4px;
+  border-radius: 12px;
   cursor: pointer;
   font-size: 16px;
   margin-top: 12px;
+  transition: transform 0.3s ease;
 }
 
 button:hover {
   background-color: #0056b3;
+  transform: scale(1.05);
 }
 
 
 .resultado-info {
   font-size: 16px;
-  color: #333;
+  color:#1a1a1a white ;
   margin-top: 10px;
   text-align: left;
   padding: 0 1rem;
+}
+
+.resultados-globales {
+  position: relative;
+  text-align: center;
+  font-size: 20px;
+  color:#1a1a1a white;
+  background-color: #222 white;
+  padding: 16px;
+  border-radius: 8px;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+.contenedor-principal {
+  display: flex;
+  justify-content: space-between; /* distribución horizontal */
+  align-items: flex-start;
+ 
+  padding: 50px;
+  box-sizing: border-box;
+  width: 100vw; /* usar el ancho completo */
+  gap: 10px;
+}
+
+.columna-izquierda,
+.columna-derecha {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.columna-centro {
+  width: 500px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
