@@ -27,6 +27,9 @@ function App() {
   const [returnedBlockX, setReturnedBlockX] = useState<number | null>(null);
   const [returnedBlockY, setReturnedBlockY] = useState<number | null>(null);
 
+  const [totalThreads, setTotalThreads] = useState<number | null>(null);
+  const [totalBlocks, setTotalBlocks] = useState<number | null>(null);
+  
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       setImage(e.target.files[0]);
@@ -85,6 +88,8 @@ function App() {
       setReturnedSigma(response.data.sigma ?? null); // solo si viene sigma
       setReturnedBlockX(response.data.block_x);
       setReturnedBlockY(response.data.block_y);
+      setTotalThreads(response.data.threads_total ?? null);
+      setTotalBlocks(response.data.blocks_total ?? null);
 
     } catch (error) {
       console.error("Error al aplicar filtro:", error);
@@ -217,6 +222,12 @@ function App() {
             )}
             {returnedBlockY !== null && (
               <p>Block Y: <strong>{returnedBlockY}</strong></p>
+            )}
+            {totalThreads !== null && (
+              <p>Hilos totales: <strong>{totalThreads}</strong></p>
+            )}
+            {totalBlocks !== null && (
+              <p>Bloques totales: <strong>{totalBlocks}</strong></p>
             )}
           </div>
         )}
