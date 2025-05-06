@@ -100,6 +100,35 @@ function App() {
     <div>
     <h1 className="title">Image Filter App</h1>
 
+    <div className="contenedor-filtros">
+      {/* Gabor */}
+      <div className="bloque-filtro">
+        <h3>Gabor</h3>
+        <div className="imagenes-filtro">
+          <img src="gausori.jpg" alt="Gabor original" className="mini-imagen" />
+          <img src="gabresul.jpg" alt="Gabor procesada" className="mini-imagen" />
+        </div>
+      </div>
+
+      {/* Laplaciano */}
+      <div className="bloque-filtro">
+        <h3>Laplaciano</h3>
+        <div className="imagenes-filtro">
+          <img src="gausori.jpg" alt="Laplaciano original" className="mini-imagen" />
+          <img src="laplaresul.jpg" alt="Laplaciano procesada" className="mini-imagen" />
+        </div>
+      </div>
+
+      {/* Gaussian */}
+      <div className="bloque-filtro">
+        <h3>Gaussiano</h3>
+        <div className="imagenes-filtro">
+          <img src="gausori.jpg" alt="Gaussian original" className="mini-imagen" />
+          <img src="gausresul.jpg" alt="Gaussian procesada" className="mini-imagen" />
+        </div>
+      </div>
+    </div>
+
     <div className="contenedor-principal">
       {/* Columna izquierda - Imagen original */}
       <div className="columna-izquierda">
