@@ -9,7 +9,9 @@
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
+  -webkit-font-smoothing: antialiased;  
+  background: linear-gradient(to right, rgba(0, 255, 208, 0.3), rgba(0, 183, 255, 0.3));
+
   -moz-osx-font-smoothing: grayscale;
 }
 
@@ -54,11 +56,14 @@ select{
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: white #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s;
+  
+  background: linear-gradient(to right, rgba(0, 255, 208, 0.3), rgba(0, 183, 255, 0.3));
   margin-left: 20px;
 }
+
+
 
 input{
   border-radius: 8px;
@@ -68,6 +73,7 @@ input{
   font-weight: 500;
   font-family: inherit;
   background-color:white #1a1a1a;
+  background: transparent;
   cursor: pointer;
   transition: border-color 0.25s;
   margin-left: 20px;
